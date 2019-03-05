@@ -17,7 +17,7 @@ api = tradeapi.REST(
 
 
 def _dry_run_submit(*args, **kwargs):
-    logging.info(f'submit({args}, {kwargs})')
+    logging.info('submit({args}, {kwargs})')
 # api.submit_order =_dry_run_submit
 
 
@@ -115,7 +115,7 @@ def get_orders(api, price_df, position_size=100, max_positions=5):
             'qty': shares,
             'side': 'sell',
         })
-        logger.info(f'order(sell): {symbol} for {shares}')
+        logger.info('order(sell): {symbol} for {shares}')
 
     # likewise, if the portfoio is missing stocks from the
     # desired portfolio, buy them. We sent a limit for the total
@@ -132,7 +132,7 @@ def get_orders(api, price_df, position_size=100, max_positions=5):
             'qty': shares,
             'side': 'buy',
         })
-        logger.info(f'order(buy): {symbol} for {shares}')
+        logger.info('order(buy): {symbol} for {shares}')
         max_to_buy -= 1
     return orders
 
@@ -150,7 +150,7 @@ def trade(orders, wait=30):
     sells = [o for o in orders if o['side'] == 'sell']
     for order in sells:
         try:
-            logger.info(f'submit(sell): {order}')
+            logger.info('submit(sell): {order}')
             api.submit_order(
                 symbol=order['symbol'],
                 qty=order['qty'],
@@ -164,9 +164,9 @@ def trade(orders, wait=30):
     while count > 0:
         pending = api.list_orders()
         if len(pending) == 0:
-            logger.info(f'all sell orders done')
+            logger.info('all sell orders done')
             break
-        logger.info(f'{len(pending)} sell orders pending...')
+        logger.info('{len(pending)} sell orders pending...')
         time.sleep(1)
         count -= 1
 
@@ -174,7 +174,7 @@ def trade(orders, wait=30):
     buys = [o for o in orders if o['side'] == 'buy']
     for order in buys:
         try:
-            logger.info(f'submit(buy): {order}')
+            logger.info('submit(buy): {order}')
             api.submit_order(
                 symbol=order['symbol'],
                 qty=order['qty'],
@@ -188,9 +188,9 @@ def trade(orders, wait=30):
     while count > 0:
         pending = api.list_orders()
         if len(pending) == 0:
-            logger.info(f'all buy orders done')
+            logger.info('all buy orders done')
             break
-        logger.info(f'{len(pending)} buy orders pending...')
+        logger.info('{len(pending)} buy orders pending...')
         time.sleep(1)
         count -= 1
 
@@ -213,6 +213,6 @@ def main():
             # TODO: this isn't tolerant to process restarts, so this
             # flag should probably be saved on disk
             done = now.strftime('%Y-%m-%d')
-            logger.info(f'done for {done}')
+            logger.info('done for {done}')
 
         time.sleep(1)
